@@ -1,0 +1,3 @@
+[submodule "windows-chewing-tsf"]
+	path = windows-chewing-tsf
+	url = https://github.com/chewing/windows-chewing-tsf.git
