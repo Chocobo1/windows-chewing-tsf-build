@@ -9,7 +9,8 @@ set "CMAKE_GEN_X64=%CMAKE_GEN_X86% Win64"
 
 set SOL_FILE="windows-chewing-tsf.sln"
 set MSBUILD="C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe"
-set "MSBUILD_CMD=/m /p:Configuration=Release /t:Clean;Build"
+set "MSBUILD_CMD_X86=/m /p:Configuration=Release /t:Clean;ChewingPreferences;ChewingTextService;all_static_data;data"
+set "MSBUILD_CMD_X64=/m /p:Configuration=Release /t:Clean;ChewingTextService"
 
 set NSIS="C:\Program Files (x86)\NSIS\Bin\makensis.exe"
 
@@ -22,13 +23,13 @@ mkdir %BUILD_DIR% && cd %BUILD_DIR%
 	rem compile x86
 	mkdir "x86" && cd "x86"
 	%CMAKE% -G "%CMAKE_GEN_X86%" %REPO_DIR%
-	%MSBUILD% %SOL_FILE% %MSBUILD_CMD%
+	%MSBUILD% %SOL_FILE% %MSBUILD_CMD_X86%
 	cd ..
 
 	rem compile x64
 	mkdir "x64" && cd "x64"
 	%CMAKE% -G "%CMAKE_GEN_X64%" %REPO_DIR%
-	%MSBUILD% %SOL_FILE% %MSBUILD_CMD%
+	%MSBUILD% %SOL_FILE% %MSBUILD_CMD_X64%
 	cd ..
 
 	rem NSIS
