@@ -1,8 +1,135 @@
-version: 1.0.{build}
-branches:
-  only:
-  - dev
+# Notes:
+# - Minimal appveyor.yml file is an empty file. All sections are optional.
+# - Indent each level of configuration with 2 spaces. Do not use tabs!
+# - All section names are case-sensitive.
+# - Section names should be unique on each level.
+
+#---------------------------------#
+#  general configuration          #
+#---------------------------------#
+
+version: '{branch}-{build}'
+
+# Do not build on tags (GitHub only)
 skip_tags: true
-build:
-  parallel: true
-  verbosity: normal
+
+
+#---------------------------------#
+#  environment configuration      #
+#---------------------------------#
+
+# environment variables
+# build system info: http://www.appveyor.com/docs/installed-software
+environment:
+  PROJECT_DIR: &PROJECT_DIR c:\project
+  REPO_DIR: c:\project\windows-chewing-tsf
+  BUILD_DIR: c:\build
+
+  # should replaced by fetching from chocolatey
+  NSIS_EXE: c:\nsis\Bin\makensis.exe
+  NSIS_DIR: c:\nsis
+  NSIS_VERSION: 3.0b1
+  NSIS_URL: http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe
+
+  SQLITE_DIR: c:\sqlite
+  SQLITE_INST:
+  SQLITE_VERSION: 3.8.8.3
+  SQLITE_URL: https://sqlite.org/2015/sqlite-amalgamation-3080803.zip
+
+  CMAKE_GEN_X86: Visual Studio 12 2013
+  CMAKE_GEN_X64: Visual Studio 12 2013 Win64
+
+  SOL_FILE: windows-chewing-tsf.sln
+  MSBUILD_CMD_X86: /m /p:Configuration=Release /t:Clean;ChewingPreferences;ChewingTextService;all_static_data;data
+  MSBUILD_CMD_X64: /m /p:Configuration=Release /t:Clean;ChewingTextService
+
+# clone directory
+clone_folder: *PROJECT_DIR
+
+matrix:
+  # set this flag to immediately finish build once one of the jobs fails.
+  fast_finish: true
+
+
+install:
+  - 'echo "Setting up NSIS"'
+  - 'cd \'
+  - 'appveyor DownloadFile "%NSIS_URL%" -FileName "nsissetup.exe"'
+  - '"nsissetup.exe" /S /D=%NSIS_DIR%'   # double quotes are not allowed in /D
+
+  - 'echo "init git submodules"'
+  - 'cd "%REPO_DIR%"'
+  - 'git submodule update --init --remote --recursive'
+
+
+#---------------------------------#
+#  build configuration            #
+#---------------------------------#
+
+# scripts to run before build
+before_build:
+  - 'echo "updating sqlite-amalgamation"'
+  - 'cd \'
+  - 'appveyor DownloadFile "%SQLITE_URL%" -FileName "sqlite.zip"'
+  - '7z e "sqlite.zip" -o"%SQLITE_DIR%"'
+  - 'cd "%SQLITE_DIR%" && copy /Y * "%REPO_DIR%\libchewing\thirdparty\sqlite-amalgamation"'
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - 'echo "build start"'
+  - 'cd \ && mkdir %BUILD_DIR% && cd %BUILD_DIR%'
+
+  - 'echo "building x86"'
+  - 'mkdir "x86" && cd "x86"'
+  - 'cmake -G "%CMAKE_GEN_X86%" "%REPO_DIR%"'
+  - 'msbuild %SOL_FILE% %MSBUILD_CMD_X86%'
+  - 'cd ..'
+
+  - 'echo "building x64"'
+  - 'mkdir "x64" && cd "x64"'
+  - 'cmake -G "%CMAKE_GEN_X64%" "%REPO_DIR%"'
+  - 'msbuild %SOL_FILE% %MSBUILD_CMD_X64%'
+  - 'cd ..'
+
+# scripts to run before deployment
+after_build:
+  - 'echo "running NSIS"'
+  - 'cd "%BUILD_DIR%"'
+  - 'mkdir "nsis" && cd "nsis"'
+  - 'copy "%REPO_DIR%\installer\*" "."'
+  - 'copy "%REPO_DIR%\COPYING.txt" "."'
+
+  - 'mkdir "Dictionary"'
+  - 'copy "..\x86\libchewing\data\*" ".\Dictionary"'
+
+  - 'mkdir "x86"'
+  - 'copy "..\x86\ChewingTextService\Release\*.dll" ".\x86"'
+  - 'copy "..\x86\ChewingPreferences\Release\*.exe" "."'
+
+  - 'mkdir "x64"'
+  - 'copy "..\x64\ChewingTextService\Release\*.dll" ".\x64"'
+
+  # LICENSE file
+  - 'copy /Y "COPYING.txt" "..\"'
+
+  - '"%NSIS_EXE%" "installer.nsi"'
+
+  - 'cd.. && cd..'
+  - 'copy "%BUILD_DIR%\nsis\windows-chewing-tsf.exe" "%PROJECT_DIR%"'  # the artifact must reside at the source repo root
+
+
+#---------------------------------#
+#  tests configuration            #
+#---------------------------------#
+
+# to disable automatic tests 
+test: off
+
+
+#---------------------------------#
+#  artifacts configuration        #
+#---------------------------------#
+
+artifacts:
+  - path: windows-chewing-tsf.exe
+    name: Installer
