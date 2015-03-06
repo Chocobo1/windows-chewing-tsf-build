@@ -117,6 +117,10 @@ after_build:
   - 'cd.. && cd..'
   - 'copy "%BUILD_DIR%\nsis\windows-chewing-tsf.exe" "%PROJECT_DIR%"'  # the artifact must reside at the source repo root
 
+  # generate SHA1
+  - 'cd "%PROJECT_DIR%"'
+  - 'powershell -Command "& { (Get-FileHash -Algorithm SHA1 "windows-chewing-tsf.exe").hash; }" > "windows-chewing-tsf.sha1"'
+
 
 #---------------------------------#
 #  tests configuration            #
@@ -132,4 +136,6 @@ test: off
 
 artifacts:
   - path: windows-chewing-tsf.exe
-    name: Installer
+    name: installer
+  - path: windows-chewing-tsf.sha1
+    name: checksum
