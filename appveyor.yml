@@ -52,12 +52,12 @@ matrix:
 
 
 install:
-  - 'echo "Setting up NSIS"'
+  # Setting up NSIS
   - 'cd \'
   - 'appveyor DownloadFile "%NSIS_URL%" -FileName "nsissetup.exe"'
   - '"nsissetup.exe" /S /D=%NSIS_DIR%'   # double quotes are not allowed in /D
 
-  - 'echo "init git submodules"'
+  # git submodules
   - 'cd "%REPO_DIR%"'
   - 'git submodule update --init --remote --depth 1 --recursive'
 
@@ -68,7 +68,7 @@ install:
 
 # scripts to run before build
 before_build:
-  - 'echo "updating sqlite-amalgamation"'
+  # updating sqlite-amalgamation
   - 'cd \'
   - 'appveyor DownloadFile "%SQLITE_URL%" -FileName "sqlite.zip"'
   - '7z e "sqlite.zip" -o"%SQLITE_DIR%"'
@@ -76,16 +76,16 @@ before_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - 'echo "build start"'
+  # build start
   - 'cd \ && mkdir %BUILD_DIR% && cd %BUILD_DIR%'
 
-  - 'echo "building x86"'
+  # build x86
   - 'mkdir "x86" && cd "x86"'
   - 'cmake -G "%CMAKE_GEN_X86%" "%REPO_DIR%"'
   - 'msbuild %SOL_FILE% %MSBUILD_CMD_X86%'
   - 'cd ..'
 
-  - 'echo "building x64"'
+  # build x64
   - 'mkdir "x64" && cd "x64"'
   - 'cmake -G "%CMAKE_GEN_X64%" "%REPO_DIR%"'
   - 'msbuild %SOL_FILE% %MSBUILD_CMD_X64%'
@@ -93,7 +93,7 @@ build_script:
 
 # scripts to run before deployment
 after_build:
-  - 'echo "running NSIS"'
+  # run NSIS
   - 'cd "%BUILD_DIR%"'
   - 'mkdir "nsis" && cd "nsis"'
   - 'copy "%REPO_DIR%\installer\*" "."'
@@ -109,7 +109,7 @@ after_build:
   - 'mkdir "x64"'
   - 'copy "..\x64\ChewingTextService\Release\*.dll" ".\x64"'
 
-  # LICENSE file
+  # copy LICENSE file
   - 'copy /Y "COPYING.txt" "..\"'
 
   - '"%NSIS_EXE%" "installer.nsi"'
