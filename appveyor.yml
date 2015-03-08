@@ -8,6 +8,7 @@
 #  general configuration          #
 #---------------------------------#
 
+# version format
 version: '{branch}-{build}'
 
 # Do not build on tags (GitHub only)
@@ -47,20 +48,18 @@ environment:
 # clone directory
 clone_folder: *PROJECT_DIR
 
+# set clone depth
+clone_depth: 1
+
 matrix:
   # set this flag to immediately finish build once one of the jobs fails.
   fast_finish: true
-
 
 install:
   # Setting up NSIS
   - 'cd \'
   - 'appveyor DownloadFile "%NSIS_URL%" -FileName "nsissetup.exe"'
   - '"nsissetup.exe" /S /D=%NSIS_DIR%'  # double quotes are not allowed in /D
-
-  # git submodules
-  - 'cd "%REPO_DIR%"'
-  - 'git submodule update --init --remote --depth 1 --recursive'
 
 
 #---------------------------------#
@@ -69,6 +68,10 @@ install:
 
 # scripts to run before build
 before_build:
+  # git submodules
+  - 'cd "%REPO_DIR%"'
+  - 'git submodule update --init --remote --depth 1 --recursive'
+
   # updating sqlite-amalgamation
   - 'cd \'
   - 'appveyor DownloadFile "%SQLITE_URL%" -FileName "sqlite.zip"'
