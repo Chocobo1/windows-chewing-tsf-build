@@ -59,7 +59,7 @@ install:
 
   - 'echo "init git submodules"'
   - 'cd "%REPO_DIR%"'
-  - 'git submodule update --init --remote --recursive'
+  - 'git submodule update --init --remote --depth 1 --recursive'
 
 
 #---------------------------------#
