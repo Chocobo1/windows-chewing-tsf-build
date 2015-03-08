@@ -22,12 +22,13 @@ skip_tags: true
 # build system info: http://www.appveyor.com/docs/installed-software
 environment:
   PROJECT_DIR: &PROJECT_DIR c:\project
-  REPO_DIR: c:\project\windows-chewing-tsf
+  REPO_DIR:  c:\project\windows-chewing-tsf  # directory created by appveyor
   BUILD_DIR: c:\build
+  INST_DIR:  c:\build\installer
 
-  # should replaced by fetching from chocolatey
-  NSIS_EXE: c:\nsis\Bin\makensis.exe
+  # should replaced by using chocolatey
   NSIS_DIR: c:\nsis
+  NSIS_EXE: c:\nsis\Bin\makensis.exe
   NSIS_VERSION: 3.0b1
   NSIS_URL: http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe
 
@@ -55,7 +56,7 @@ install:
   # Setting up NSIS
   - 'cd \'
   - 'appveyor DownloadFile "%NSIS_URL%" -FileName "nsissetup.exe"'
-  - '"nsissetup.exe" /S /D=%NSIS_DIR%'   # double quotes are not allowed in /D
+  - '"nsissetup.exe" /S /D=%NSIS_DIR%'  # double quotes are not allowed in /D
 
   # git submodules
   - 'cd "%REPO_DIR%"'
@@ -72,50 +73,47 @@ before_build:
   - 'cd \'
   - 'appveyor DownloadFile "%SQLITE_URL%" -FileName "sqlite.zip"'
   - '7z e "sqlite.zip" -o"%SQLITE_DIR%"'
-  - 'cd "%SQLITE_DIR%" && copy /Y * "%REPO_DIR%\libchewing\thirdparty\sqlite-amalgamation"'
+  - 'copy /Y "%SQLITE_DIR%\*" "%REPO_DIR%\libchewing\thirdparty\sqlite-amalgamation"'
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   # build start
-  - 'cd \ && mkdir %BUILD_DIR% && cd %BUILD_DIR%'
+  - 'mkdir "%BUILD_DIR%"'
 
   # build x86
-  - 'mkdir "x86" && cd "x86"'
+  - 'cd "%BUILD_DIR%" && mkdir "x86" && cd "x86"'
   - 'cmake -G "%CMAKE_GEN_X86%" "%REPO_DIR%"'
   - 'msbuild %SOL_FILE% %MSBUILD_CMD_X86%'
-  - 'cd ..'
 
   # build x64
-  - 'mkdir "x64" && cd "x64"'
+  - 'cd "%BUILD_DIR%" && mkdir "x64" && cd "x64"'
   - 'cmake -G "%CMAKE_GEN_X64%" "%REPO_DIR%"'
   - 'msbuild %SOL_FILE% %MSBUILD_CMD_X64%'
-  - 'cd ..'
 
 # scripts to run before deployment
 after_build:
+  # prepare for NSIS
+  - 'mkdir "%INST_DIR%" && cd "%INST_DIR%"'
+  - 'copy "%REPO_DIR%\installer\*" ".\"'
+  - 'copy "%REPO_DIR%\COPYING.txt" ".\..\"'  # special case for LICENSE file
+
+  - 'cd "%INST_DIR%" && mkdir "Dictionary"'
+  - 'copy "%BUILD_DIR%\x86\libchewing\data\*" ".\Dictionary"'
+
+  - 'cd "%INST_DIR%" && mkdir "x86"'
+  - 'copy "%BUILD_DIR%\x86\ChewingTextService\Release\*.dll" ".\x86"'
+  - 'copy "%BUILD_DIR%\x86\ChewingPreferences\Release\*.exe" "."'
+
+  - 'cd "%INST_DIR%" && mkdir "x64"'
+  - 'copy "%BUILD_DIR%\x64\ChewingTextService\Release\*.dll" ".\x64"'
+
   # run NSIS
-  - 'cd "%BUILD_DIR%"'
-  - 'mkdir "nsis" && cd "nsis"'
-  - 'copy "%REPO_DIR%\installer\*" "."'
-  - 'copy "%REPO_DIR%\COPYING.txt" "."'
-
-  - 'mkdir "Dictionary"'
-  - 'copy "..\x86\libchewing\data\*" ".\Dictionary"'
-
-  - 'mkdir "x86"'
-  - 'copy "..\x86\ChewingTextService\Release\*.dll" ".\x86"'
-  - 'copy "..\x86\ChewingPreferences\Release\*.exe" "."'
-
-  - 'mkdir "x64"'
-  - 'copy "..\x64\ChewingTextService\Release\*.dll" ".\x64"'
-
-  # copy LICENSE file
-  - 'copy /Y "COPYING.txt" "..\"'
-
+  - 'cd "%INST_DIR%"'
   - '"%NSIS_EXE%" "installer.nsi"'
 
-  - 'cd.. && cd..'
-  - 'copy "%BUILD_DIR%\nsis\windows-chewing-tsf.exe" "%PROJECT_DIR%"'  # the artifact must reside at the source repo root
+  # prepare for artifacts packaging
+  - 'cd "%INST_DIR%"'
+  - 'copy "windows-chewing-tsf.exe" "%PROJECT_DIR%"'  # the artifact must reside at the source repo root
 
   # generate SHA1
   - 'cd "%PROJECT_DIR%"'
