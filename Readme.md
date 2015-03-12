@@ -1,5 +1,5 @@
 ﻿### 新酷音 Windows非官方編譯版
-[![AppVeyor-Icon](https://ci.appveyor.com/api/projects/status/github/Chocobo1/windows-chewing-tsf-build?branch=master&svg=true)](https://ci.appveyor.com/project/Chocobo1/windows-chewing-tsf-build)
+[![AppVeyor-Icon](https://ci.appveyor.com/api/projects/status/github/Chocobo1/windows-chewing-tsf-build?branch=build&svg=true)](https://ci.appveyor.com/project/Chocobo1/windows-chewing-tsf-build)
 
 #### 使用上的問題，恕*不*提供任何協助!
 #### 更多資訊，請參考[新酷音官網](http://chewing.im/)

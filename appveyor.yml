@@ -11,6 +11,12 @@
 # version format
 version: '{branch}-{build}'
 
+# branches to build
+branches:
+# whitelist
+  only:
+    - build
+
 # Do not build on tags (GitHub only)
 skip_tags: true
 
