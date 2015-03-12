@@ -18,5 +18,4 @@ After years of waiting for a newer release (even alpha or beta is fine, but it *
 * Windows Vista
 
 ******
-#### Disclaimer: By downloading and installing these builds you accept the fact that they can be broken if something is broken in the upstream master branch
 #### [下載 Download](https://github.com/Chocobo1/windows-chewing-tsf-Chocobo1-build/releases)
