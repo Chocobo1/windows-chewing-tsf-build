@@ -41,8 +41,8 @@ environment:
 
   SQLITE_DIR: c:\sqlite
   SQLITE_INST:
-  SQLITE_VERSION: 3.8.9
-  SQLITE_URL: https://www.sqlite.org/2015/sqlite-amalgamation-3080900.zip
+  SQLITE_VERSION: 3.8.10.2
+  SQLITE_URL: https://www.sqlite.org/2015/sqlite-amalgamation-3081002.zip
 
   CMAKE_GEN_X86: Visual Studio 12 2013
   CMAKE_GEN_X64: Visual Studio 12 2013 Win64
@@ -133,7 +133,7 @@ after_build:
 #  tests configuration            #
 #---------------------------------#
 
-# to disable automatic tests 
+# to disable automatic tests
 test: off
 
 
