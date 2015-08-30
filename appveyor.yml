@@ -48,8 +48,8 @@ environment:
   CMAKE_GEN_X64: Visual Studio 12 2013 Win64
 
   SOL_FILE: windows-chewing-tsf.sln
-  MSBUILD_CMD_X86: /m /p:Configuration=Release /t:Clean;ChewingPreferences;ChewingTextService;all_static_data;data
-  MSBUILD_CMD_X64: /m /p:Configuration=Release /t:Clean;ChewingTextService
+  MSBUILD_CMD_X86: /m /p:Configuration=Release /t:ChewingPreferences;ChewingTextService;all_static_data;data
+  MSBUILD_CMD_X64: /m /p:Configuration=Release /t:ChewingTextService
 
 # clone directory
 clone_folder: *PROJECT_DIR
