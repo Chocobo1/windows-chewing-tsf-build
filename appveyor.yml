@@ -27,6 +27,8 @@ skip_tags: true
 
 # environment variables
 # build system info: http://www.appveyor.com/docs/installed-software
+os: Visual Studio 2015
+
 environment:
   PROJECT_DIR: &PROJECT_DIR c:\project
   REPO_DIR:  c:\project\windows-chewing-tsf  # directory created by appveyor
@@ -44,8 +46,8 @@ environment:
   SQLITE_VERSION: 3.8.11.1
   SQLITE_URL: https://www.sqlite.org/2015/sqlite-amalgamation-3081101.zip
 
-  CMAKE_GEN_X86: Visual Studio 12 2013
-  CMAKE_GEN_X64: Visual Studio 12 2013 Win64
+  CMAKE_GEN_X86: Visual Studio 14 2015
+  CMAKE_GEN_X64: Visual Studio 14 2015 Win64
 
   SOL_FILE: windows-chewing-tsf.sln
   MSBUILD_CMD_X86: /m /p:Configuration=Release /t:ChewingPreferences;ChewingTextService;all_static_data;data
