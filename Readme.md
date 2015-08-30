@@ -15,7 +15,7 @@ For more information, visit [Chewing website](http://chewing.im/)
 ******
 ### 支援作業系統 (32位元 & 64位元)
 ### Supported OS (x86 & x64)
-* Windows 8, 8.1 (Desktop mode)
+* Windows 8, 8.1, 10 (Desktop mode)
 * Windows 7
 * Windows Vista
 
