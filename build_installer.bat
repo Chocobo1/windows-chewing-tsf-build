@@ -4,11 +4,11 @@ rem public variables, change as you need
 set REPO_DIR="E:\windows-chewing-tsf"
 
 set CMAKE="C:\cmake\bin\cmake.exe"
-set "CMAKE_GEN_X86=Visual Studio 12 2013"
+set "CMAKE_GEN_X86=Visual Studio 14 2015"
 set "CMAKE_GEN_X64=%CMAKE_GEN_X86% Win64"
 
 set SOL_FILE="windows-chewing-tsf.sln"
-set MSBUILD="C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe"
+set MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
 set "MSBUILD_CMD_X86=/m /p:Configuration=Release /t:Clean;ChewingPreferences;ChewingTextService;all_static_data;data"
 set "MSBUILD_CMD_X64=/m /p:Configuration=Release /t:Clean;ChewingTextService"
 
