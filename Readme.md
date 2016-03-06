@@ -20,4 +20,5 @@ For more information, visit [Chewing website](http://chewing.im/)
 * Windows Vista
 
 ******
-### [下載頁面  Download page](https://github.com/Chocobo1/windows-chewing-tsf-Chocobo1-build/releases)
+### [下載頁面  Download page](https://github.com/Chocobo1/windows-chewing-tsf-build/releases)
+### [下載詞庫編輯器  Download user phrase editor](https://github.com/Chocobo1/chewing-editor-build)
