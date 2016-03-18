@@ -38,13 +38,13 @@ environment:
   # should replaced by using chocolatey
   NSIS_DIR: c:\nsis
   NSIS_EXE: c:\nsis\Bin\makensis.exe
-  NSIS_VERSION: 3.0b2
-  NSIS_URL: http://prdownloads.sourceforge.net/nsis/nsis-3.0b2-setup.exe
+  NSIS_VERSION: 3.0b3
+  NSIS_URL: https://prdownloads.sourceforge.net/nsis/nsis-3.0b3-setup.exe
 
   SQLITE_DIR: c:\sqlite
   SQLITE_INST:
-  SQLITE_VERSION: 3.8.11.1
-  SQLITE_URL: https://www.sqlite.org/2015/sqlite-amalgamation-3081101.zip
+  SQLITE_VERSION: 3.11.1
+  SQLITE_URL: https://www.sqlite.org/2016/sqlite-amalgamation-3110100.zip
 
   CMAKE_GEN_X86: Visual Studio 14 2015
   CMAKE_GEN_X64: Visual Studio 14 2015 Win64
