@@ -42,9 +42,8 @@ environment:
   NSIS_URL: https://prdownloads.sourceforge.net/nsis/nsis-3.0rc1-setup.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_INST:
-  SQLITE_VERSION: 3.12.2
-  SQLITE_URL: https://www.sqlite.org/2016/sqlite-amalgamation-3120200.zip
+  SQLITE_VERSION: 3.14.2
+  SQLITE_URL: https://sqlite.org/2016/sqlite-amalgamation-3140200.zip
 
   CMAKE_GEN_X86: Visual Studio 14 2015
   CMAKE_GEN_X64: Visual Studio 14 2015 Win64
