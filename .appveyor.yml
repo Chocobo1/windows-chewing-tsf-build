@@ -117,7 +117,7 @@ after_build:
 
   # generate SHA1
   - 'cd "%PROJECT_DIR%"'
-  - 'powershell -Command "& { (Get-FileHash -Algorithm SHA1 "windows-chewing-tsf.exe").hash; }" > "windows-chewing-tsf.sha1"'
+  - 'powershell -Command "& { $hash = (Get-FileHash -Algorithm SHA1 "windows-chewing-tsf.exe").hash.ToString().toLower(); Write-Host $hash " *windows-chewing-tsf.exe"; }" > "windows-chewing-tsf.exe.sha1"'
 
 
 #---------------------------------#
