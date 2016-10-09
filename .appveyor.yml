@@ -135,5 +135,5 @@ test: off
 artifacts:
   - path: windows-chewing-tsf.exe
     name: installer
-  - path: windows-chewing-tsf.sha1
+  - path: windows-chewing-tsf.exe.sha1
     name: checksum
