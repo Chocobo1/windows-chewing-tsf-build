@@ -35,11 +35,7 @@ environment:
   BUILD_DIR: c:\build
   INST_DIR:  c:\build\installer
 
-  # should replaced by using chocolatey
-  NSIS_DIR: c:\nsis
-  NSIS_EXE: c:\nsis\Bin\makensis.exe
-  NSIS_VERSION: 3.0rc1
-  NSIS_URL: https://prdownloads.sourceforge.net/nsis/nsis-3.0rc1-setup.exe
+  NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
   SQLITE_VERSION: 3.14.2
@@ -61,12 +57,6 @@ clone_depth: 1
 matrix:
   # set this flag to immediately finish build once one of the jobs fails.
   fast_finish: true
-
-install:
-  # Setting up NSIS
-  - 'cd \'
-  - 'appveyor DownloadFile "%NSIS_URL%" -FileName "nsissetup.exe"'
-  - '"nsissetup.exe" /S /D=%NSIS_DIR%'  # double quotes are not allowed in /D
 
 
 #---------------------------------#
