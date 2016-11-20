@@ -14,7 +14,7 @@ version: '{branch}-{build}'
 # manual mode
 branches:
   except:
-- /.*/
+    - /.*/
 
 # Do not build on tags (GitHub only)
 skip_tags: true
