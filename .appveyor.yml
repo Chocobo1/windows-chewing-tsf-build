@@ -11,11 +11,10 @@
 # version format
 version: '{branch}-{build}'
 
-# branches to build
+# manual mode
 branches:
-# whitelist
-  only:
-    - build
+  except:
+- /.*/
 
 # Do not build on tags (GitHub only)
 skip_tags: true
@@ -26,7 +25,7 @@ skip_tags: true
 #---------------------------------#
 
 # environment variables
-# build system info: http://www.appveyor.com/docs/installed-software
+# build system info: https://www.appveyor.com/docs/installed-software
 os: Visual Studio 2015
 
 environment:
@@ -38,8 +37,8 @@ environment:
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_VERSION: 3.14.2
-  SQLITE_URL: https://sqlite.org/2016/sqlite-amalgamation-3140200.zip
+  SQLITE_VERSION: 3.15.1
+  SQLITE_URL: https://sqlite.org/2016/sqlite-amalgamation-3150100.zip
 
   CMAKE_GEN_X86: Visual Studio 14 2015
   CMAKE_GEN_X64: Visual Studio 14 2015 Win64
@@ -53,10 +52,6 @@ clone_folder: *PROJECT_DIR
 
 # set clone depth
 clone_depth: 1
-
-matrix:
-  # set this flag to immediately finish build once one of the jobs fails.
-  fast_finish: true
 
 
 #---------------------------------#
