@@ -25,8 +25,8 @@ skip_tags: true
 #---------------------------------#
 
 # environment variables
-# build system info: https://www.appveyor.com/docs/installed-software
-os: Visual Studio 2015
+# build system info: https://www.appveyor.com/docs/build-environment/#pre-installed-software
+os: Visual Studio 2017
 
 environment:
   PROJECT_DIR: &PROJECT_DIR c:\project
@@ -37,15 +37,15 @@ environment:
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_VERSION: 3.15.1
-  SQLITE_URL: https://sqlite.org/2016/sqlite-amalgamation-3150100.zip
+  SQLITE_VERSION: 3.17.0
+  SQLITE_URL: https://www.sqlite.org/2017/sqlite-amalgamation-3170000.zip
 
-  CMAKE_GEN_X86: Visual Studio 14 2015
-  CMAKE_GEN_X64: Visual Studio 14 2015 Win64
+  CMAKE_GEN_X86: Visual Studio 15 2017
+  CMAKE_GEN_X64: Visual Studio 15 2017 Win64
 
   SOL_FILE: windows-chewing-tsf.sln
-  MSBUILD_CMD_X86: /m /p:Configuration=Release /t:ChewingPreferences;ChewingTextService;all_static_data;data
-  MSBUILD_CMD_X64: /m /p:Configuration=Release /t:ChewingTextService
+  MSBUILD_CMD_X86: /maxcpucount /property:Configuration=Release,Platform=Win32 /target:ChewingPreferences,ChewingTextService,all_static_data,data
+  MSBUILD_CMD_X64: /maxcpucount /property:Configuration=Release,Platform=x64 /target:ChewingTextService
 
 # clone directory
 clone_folder: *PROJECT_DIR
