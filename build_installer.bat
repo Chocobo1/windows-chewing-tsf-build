@@ -4,13 +4,12 @@ rem public variables, change as you need
 set REPO_DIR="E:\windows-chewing-tsf"
 
 set CMAKE="C:\cmake\bin\cmake.exe"
-set "CMAKE_GEN_X86=Visual Studio 14 2015"
+set "CMAKE_GEN_X86=Visual Studio 15 2017"
 set "CMAKE_GEN_X64=%CMAKE_GEN_X86% Win64"
 
 set SOL_FILE="windows-chewing-tsf.sln"
-set MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
-set "MSBUILD_CMD_X86=/m /p:Configuration=Release /t:Clean;ChewingPreferences;ChewingTextService;all_static_data;data"
-set "MSBUILD_CMD_X64=/m /p:Configuration=Release /t:Clean;ChewingTextService"
+set "MSBUILD_CMD_X86=/maxcpucount /property:Configuration=Release,Platform=Win32 /target:ChewingPreferences,ChewingTextService,all_static_data,data"
+set "MSBUILD_CMD_X64=/maxcpucount /property:Configuration=Release,Platform=x64 /target:ChewingTextService"
 
 set NSIS="C:\Program Files (x86)\NSIS\Bin\makensis.exe"
 
@@ -19,23 +18,24 @@ set BUILD_DIR="chewing_build"
 
 
 rem prepare & build
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 mkdir %BUILD_DIR% && cd %BUILD_DIR%
 	rem compile x86
 	mkdir "x86" && cd "x86"
 	%CMAKE% -G "%CMAKE_GEN_X86%" %REPO_DIR%
-	%MSBUILD% %SOL_FILE% %MSBUILD_CMD_X86%
+	msbuild %SOL_FILE% %MSBUILD_CMD_X86%
 	cd ..
 
 	rem compile x64
 	mkdir "x64" && cd "x64"
 	%CMAKE% -G "%CMAKE_GEN_X64%" %REPO_DIR%
-	%MSBUILD% %SOL_FILE% %MSBUILD_CMD_X64%
+	msbuild %SOL_FILE% %MSBUILD_CMD_X64%
 	cd ..
 
 	rem NSIS
 	mkdir "nsis" && cd "nsis"
-		copy "%REPO_DIR%\installer\*" "."
-		copy "%REPO_DIR%\COPYING.txt" "."
+		copy %REPO_DIR%\installer\* .
+		copy %REPO_DIR%\COPYING.txt ..\
 
 		mkdir "Dictionary"
 		copy "..\x86\libchewing\data\*" ".\Dictionary"
