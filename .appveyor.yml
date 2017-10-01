@@ -37,7 +37,7 @@ environment:
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_URL: https://www.sqlite.org/2017/sqlite-amalgamation-3190200.zip
+  SQLITE_URL: https://www.sqlite.org/2017/sqlite-amalgamation-3200100.zip
 
   CMAKE_GEN_X86: Visual Studio 15 2017
   CMAKE_GEN_X64: Visual Studio 15 2017 Win64
