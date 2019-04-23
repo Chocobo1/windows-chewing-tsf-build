@@ -25,7 +25,7 @@ skip_tags: true
 #---------------------------------#
 
 # environment variables
-# build system info: https://www.appveyor.com/docs/build-environment/#pre-installed-software
+# build system info: https://www.appveyor.com/docs/windows-images-software/
 os: Visual Studio 2017
 
 environment:
@@ -37,7 +37,7 @@ environment:
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_URL: https://www.sqlite.org/2017/sqlite-amalgamation-3200100.zip
+  SQLITE_URL: https://www.sqlite.org/2019/sqlite-amalgamation-3280000.zip
 
   CMAKE_GEN_X86: Visual Studio 15 2017
   CMAKE_GEN_X64: Visual Studio 15 2017 Win64
@@ -109,9 +109,9 @@ after_build:
   - 'cd "%INST_DIR%"'
   - 'copy "windows-chewing-tsf.exe" "%PROJECT_DIR%"'  # the artifact must reside at the source repo root
 
-  # generate SHA1
+  # generate hash
   - 'cd "%PROJECT_DIR%"'
-  - 'powershell -Command "& { $hash = (Get-FileHash -Algorithm SHA1 "windows-chewing-tsf.exe").hash.ToString().toLower(); Write-Host $hash " *windows-chewing-tsf.exe"; }" > "windows-chewing-tsf.exe.sha1"'
+  - 'powershell -Command "& { $hash = (Get-FileHash -Algorithm SHA256 "windows-chewing-tsf.exe").hash.ToString().toLower(); Write-Host $hash " *windows-chewing-tsf.exe"; }" > "windows-chewing-tsf.exe.sha256"'
 
 
 #---------------------------------#
@@ -129,5 +129,5 @@ test: off
 artifacts:
   - path: windows-chewing-tsf.exe
     name: installer
-  - path: windows-chewing-tsf.exe.sha1
+  - path: windows-chewing-tsf.exe.sha256
     name: checksum
