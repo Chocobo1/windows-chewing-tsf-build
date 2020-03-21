@@ -37,7 +37,7 @@ environment:
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
   SQLITE_DIR: c:\sqlite
-  SQLITE_URL: https://www.sqlite.org/2019/sqlite-amalgamation-3290000.zip
+  SQLITE_URL: https://www.sqlite.org/2020/sqlite-amalgamation-3310100.zip
 
   CMAKE_GEN_X86: -G "Visual Studio 16 2019" -A "Win32"
   CMAKE_GEN_X64: -G "Visual Studio 16 2019" -A "x64"
