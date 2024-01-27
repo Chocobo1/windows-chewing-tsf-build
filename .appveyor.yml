@@ -26,7 +26,7 @@ skip_tags: true
 
 # environment variables
 # build system info: https://www.appveyor.com/docs/windows-images-software/
-os: Visual Studio 2019
+os: Visual Studio 2022
 
 environment:
   PROJECT_DIR: &PROJECT_DIR c:\project
@@ -36,11 +36,12 @@ environment:
 
   NSIS_EXE: c:\Program Files (x86)\NSIS\makensis.exe
 
-  SQLITE_DIR: c:\sqlite
-  SQLITE_URL: https://www.sqlite.org/2020/sqlite-amalgamation-3310100.zip
+  SQLITE_URL: https://www.sqlite.org/2024/sqlite-amalgamation-3450000.zip
 
-  CMAKE_GEN_X86: -G "Visual Studio 16 2019" -A "Win32"
-  CMAKE_GEN_X64: -G "Visual Studio 16 2019" -A "x64"
+  LIBCHEWING_TAG: v0.6.0
+
+  CMAKE_GEN_X86: -G "Visual Studio 17 2022" -A "Win32"
+  CMAKE_GEN_X64: -G "Visual Studio 17 2022" -A "x64"
 
   SOL_FILE: windows-chewing-tsf.sln
   MSBUILD_CMD_X86: /maxcpucount /property:Configuration=Release,Platform=Win32 /target:ChewingPreferences,ChewingTextService,all_static_data,data
@@ -61,13 +62,13 @@ clone_depth: 1
 before_build:
   # git submodules
   - 'cd "%REPO_DIR%"'
-  - 'git submodule update --init --remote --depth 1 --recursive'
+  - 'git submodule update --init --remote --recursive'
+  - 'git -C libchewing checkout %LIBCHEWING_TAG%'
 
   # updating sqlite-amalgamation
   - 'cd \'
   - 'appveyor DownloadFile "%SQLITE_URL%" -FileName "sqlite.zip"'
-  - '7z e "sqlite.zip" -o"%SQLITE_DIR%"'
-  - 'copy /Y "%SQLITE_DIR%\*" "%REPO_DIR%\libchewing\thirdparty\sqlite-amalgamation"'
+  - '7z e -y "sqlite.zip" -o"%REPO_DIR%\libchewing\thirdparty\sqlite-amalgamation"'
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
@@ -92,13 +93,16 @@ after_build:
   - 'copy "%REPO_DIR%\COPYING.txt" ".\..\"'  # special case for LICENSE file
 
   - 'cd "%INST_DIR%" && mkdir "Dictionary"'
-  - 'copy "%BUILD_DIR%\x86\libchewing\data\*" ".\Dictionary"'
+  - 'copy "%BUILD_DIR%\x86\libchewing\data\*.dat" ".\Dictionary"'
+  - 'copy "%BUILD_DIR%\x86\libchewing\data\*.tab" ".\Dictionary"'
 
   - 'cd "%INST_DIR%" && mkdir "x86"'
   - 'copy "%BUILD_DIR%\x86\ChewingTextService\Release\*.dll" ".\x86"'
+  - 'copy "%BUILD_DIR%\x86\libchewing\Release\*.dll" ".\x86"'
   - 'copy "%BUILD_DIR%\x86\ChewingPreferences\Release\*.exe" "."'
 
   - 'cd "%INST_DIR%" && mkdir "x64"'
+  - 'copy "%BUILD_DIR%\x64\libchewing\Release\*.dll" ".\x64"'
   - 'copy "%BUILD_DIR%\x64\ChewingTextService\Release\*.dll" ".\x64"'
 
   # run NSIS
